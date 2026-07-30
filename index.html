@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة إدارة العمليات الذكية - SPA</title>
+    <title>منصة إدارة العمليات الذكية</title>
     <style>
         :root {
             --primary: #2563eb;
@@ -38,18 +38,16 @@
             flex-direction: column;
         }
 
-        /* 1. الشريط العلوي العام للتنقل (Header & Nav Tabs) */
         .navbar {
             background-color: var(--surface);
             border-bottom: 1px solid var(--border);
-            padding: 12px 24px;
+            padding: 12px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
 
         .nav-brand {
@@ -59,8 +57,8 @@
         }
 
         .brand-logo {
-            width: 36px;
-            height: 36px;
+            width: 34px;
+            height: 34px;
             background-color: var(--primary);
             color: white;
             border-radius: 8px;
@@ -70,11 +68,11 @@
             font-weight: bold;
         }
 
-        .brand-title { font-size: 1.1rem; font-weight: 700; }
+        .brand-title { font-size: 1.05rem; font-weight: 700; }
 
         .nav-tabs {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             list-style: none;
         }
 
@@ -82,11 +80,12 @@
             text-decoration: none;
             color: var(--text-muted);
             font-weight: 600;
-            font-size: 0.9rem;
-            padding: 8px 14px;
+            font-size: 0.85rem;
+            padding: 8px 12px;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.2s;
+            white-space: nowrap;
         }
 
         .nav-link.active, .nav-link:hover {
@@ -97,193 +96,152 @@
         .network-status {
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 0.85rem;
+            gap: 6px;
+            font-size: 0.8rem;
             font-weight: 600;
-            padding: 6px 12px;
+            padding: 5px 10px;
             border-radius: 20px;
         }
 
         .status-dot { width: 8px; height: 8px; border-radius: 50%; }
-
         .network-status.online { background-color: var(--online-bg); color: var(--online-color); }
-        .network-status.online .status-dot { background-color: var(--online-dot); box-shadow: 0 0 6px var(--online-dot); }
-
+        .network-status.online .status-dot { background-color: var(--online-dot); }
         .network-status.offline { background-color: var(--offline-bg); color: var(--offline-color); }
-        .network-status.offline .status-dot { background-color: var(--offline-dot); box-shadow: 0 0 6px var(--offline-dot); }
+        .network-status.offline .status-dot { background-color: var(--offline-dot); }
 
-        /* 2. التحكم في عرض أقسام الصفحة (SPA Tab Contents) */
         .container {
             max-width: 1200px;
             width: 100%;
             margin: 0 auto;
-            padding: 24px 20px;
+            padding: 20px 16px;
             flex-grow: 1;
         }
 
-        .tab-content {
-            display: none; /* إخفاء الشاشات بشكل افتراضي */
-        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
 
-        .tab-content.active {
-            display: block; /* إظهار الشاشة النشطة فقط */
-            animation: fadeIn 0.25s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(4px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* تنسيقات المكونات المشتركة */
         .card {
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
+            padding: 18px;
+            margin-bottom: 16px;
         }
 
         .btn-primary {
             background-color: var(--primary);
             color: white;
             border: none;
-            padding: 10px 18px;
+            padding: 10px 16px;
             border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.2s;
+            font-size: 0.9rem;
         }
 
-        .btn-primary:hover { background-color: var(--primary-hover); }
-
-        /* تنسيق جدول عام */
         .app-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.875rem;
+            font-size: 0.85rem;
         }
 
         .app-table th, .app-table td {
-            padding: 12px 10px;
+            padding: 10px;
             text-align: right;
             border-bottom: 1px solid var(--border);
         }
 
-        .app-table th { background-color: #f8fafc; color: var(--text-muted); font-weight: 600; }
+        .app-table th { background-color: #f8fafc; color: var(--text-muted); }
 
-        .badge { padding: 3px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; }
-        .badge-success { background-color: #ecfdf5; color: #047857; }
-        .badge-warning { background-color: #fef3c7; color: #92400e; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 20px; }
+        .quick-actions-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-bottom: 20px; }
+        .action-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px; cursor: pointer; }
+        .action-card:hover { border-color: var(--primary); }
 
-        /* شاشة 1: Dashboard Styles */
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 24px; }
-        .quick-actions-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-bottom: 24px; }
-        .action-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; cursor: pointer; transition: all 0.2s; }
-        .action-card:hover { border-color: var(--primary); transform: translateY(-3px); }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
+        .product-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
 
-        /* شاشة 3: Products Styles */
-        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; }
-        .product-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
-
-        /* النوافذ المنبثقة (Modals) */
-        .modal-overlay {
-            position: fixed; top:0; left:0; right:0; bottom:0;
-            background: rgba(0,0,0,0.4); display: none;
-            justify-content: center; align-items: center; z-index: 1000;
-        }
-        .modal-card { background: var(--surface); padding: 24px; border-radius: 12px; width: 90%; max-width: 440px; }
         .form-group { margin-bottom: 12px; }
         .form-label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 4px; }
-        .form-input, .form-select { width: 100%; padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; }
+        .form-input, .form-select { width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; }
 
-         @media (max-width: 768px) {
-    .navbar { flex-direction: column; gap: 10px; align-items: flex-start; }
-    .nav-tabs { display: flex; overflow-x: auto; width: 100%; padding-bottom: 4px; }
-    .nav-link { white-space: nowrap; font-size: 0.8rem; padding: 6px 10px; }
-         }
-        /* يمكن ربطها بقائمة سفلية للهاتف */
+        @media (max-width: 768px) {
+            .navbar { flex-direction: column; gap: 10px; align-items: stretch; }
+            .nav-tabs { display: flex; overflow-x: auto; width: 100%; padding-bottom: 4px; border-bottom: 1px solid var(--border); }
         }
     </style>
 </head>
 <body>
 
-    <!-- الشريط العلوي للتنقل ومؤشر الشبكة -->
     <header class="navbar">
-        <div class="nav-brand">
-            <div class="brand-logo">S</div>
-            <h1 class="brand-title">منصة إدارة العمليات الذكية</h1>
+        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+            <div class="nav-brand">
+                <div class="brand-logo">S</div>
+                <h1 class="brand-title">منصة إدارة العمليات الذكية</h1>
+            </div>
+            <div class="network-status online" id="globalNetStatus">
+                <span class="status-dot"></span>
+                <span id="globalNetText">متصل</span>
+            </div>
         </div>
 
-        <!-- القوائم العلوي للتنقل بين الشاشات (Tabs) -->
         <ul class="nav-tabs">
-            <li><a class="nav-link active" data-tab="dashboard">اللوحة الرئيسية</a></li>
-            <li><a class="nav-link" data-tab="sales">تسجيل المبيعات</a></li>
-            <li><a class="nav-link" data-tab="products">إدارة المنتجات</a></li>
-            <li><a class="nav-link" data-tab="accounts">إدارة الحسابات</a></li>
+            <li><a class="nav-link active" onclick="switchTab('dashboard')">اللوحة الرئيسية</a></li>
+            <li><a class="nav-link" onclick="switchTab('sales')">تسجيل المبيعات</a></li>
+            <li><a class="nav-link" onclick="switchTab('products')">إدارة المنتجات</a></li>
+            <li><a class="nav-link" onclick="switchTab('accounts')">إدارة الحسابات</a></li>
         </ul>
-
-        <div class="network-status online" id="globalNetStatus">
-            <span class="status-dot"></span>
-            <span id="globalNetText">متصل (Online)</span>
-        </div>
     </header>
 
     <main class="container">
 
-        <!-- ==================== الشاشة الأولى: اللوحة الرئيسية (Dashboard) ==================== -->
+        <!-- الشاشة 1: اللوحة الرئيسية -->
         <section id="tab-dashboard" class="tab-content active">
-            <div style="margin-bottom: 20px;">
+            <div style="margin-bottom: 16px;">
                 <h2>اللوحة الرئيسية</h2>
-                <p style="color: var(--text-muted); font-size: 0.9rem;">ملخص أداء النظام والإحصائيات الحية.</p>
+                <p style="color: var(--text-muted); font-size: 0.85rem;">ملخص أداء النظام والإحصائيات الحية</p>
             </div>
 
-            <!-- بطاقات الإحصائيات -->
             <div class="stats-grid">
                 <div class="card">
-                    <span style="color: var(--text-muted); font-size: 0.85rem;">إجمالي مبيعات اليوم</span>
-                    <h3 style="font-size: 1.5rem; margin-top: 6px;" id="dashTotalSales">0 ريال</h3>
+                    <span style="color: var(--text-muted); font-size: 0.8rem;">إجمالي مبيعات اليوم</span>
+                    <h3 style="font-size: 1.4rem; margin-top: 4px;" id="dashTotalSales">125,000 ريال</h3>
                 </div>
                 <div class="card">
-                    <span style="color: var(--text-muted); font-size: 0.85rem;">عدد العمليات المسجلة</span>
-                    <h3 style="font-size: 1.5rem; margin-top: 6px;" id="dashTxnCount">0</h3>
+                    <span style="color: var(--text-muted); font-size: 0.8rem;">عدد العمليات المسجلة</span>
+                    <h3 style="font-size: 1.4rem; margin-top: 4px;" id="dashTxnCount">3</h3>
                 </div>
                 <div class="card">
-                    <span style="color: var(--text-muted); font-size: 0.85rem;">طابور الأوفلاين المعلق</span>
-                    <h3 style="font-size: 1.5rem; margin-top: 6px; color: var(--offline-color);" id="dashOfflineCount">0</h3>
-                </div>
-                <div class="card">
-                    <span style="color: var(--text-muted); font-size: 0.85rem;">إجمالي الحسابات النشطة</span>
-                    <h3 style="font-size: 1.5rem; margin-top: 6px;" id="dashAccountsCount">0</h3>
+                    <span style="color: var(--text-muted); font-size: 0.8rem;">طابور الأوفلاين المعلق</span>
+                    <h3 style="font-size: 1.4rem; margin-top: 4px; color: var(--offline-color);" id="dashOfflineCount">0</h3>
                 </div>
             </div>
 
-            <!-- بطاقات الوصول السريع -->
             <h3>الإجراءات السريعة</h3>
-            <div class="quick-actions-grid" style="margin-top: 12px;">
+            <div class="quick-actions-grid" style="margin-top: 10px;">
                 <div class="action-card" onclick="switchTab('sales')">
-                    <h4>💰 تسجيل عملية بيع</h4>
-                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">إدخال عملية بيع مع دعم الحفظ المحلي للأوفلاين.</p>
+                    <h4>تسجيل عملية بيع</h4>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">إدخال عملية بيع مع دعم الحفظ المحلي للأوفلاين</p>
                 </div>
                 <div class="action-card" onclick="switchTab('products')">
-                    <h4>📦 إدارة المنتجات والمخزون</h4>
-                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">التحكم في المخزون، وتحديث الكميات والأسعار.</p>
+                    <h4>إدارة المنتجات والمخزون</h4>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">التحكم في المخزون وتحديث الكميات والأسعار</p>
                 </div>
                 <div class="action-card" onclick="switchTab('accounts')">
-                    <h4>👥 إدارة العملاء والموردين</h4>
-                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">عرض الأرصدة وإضافة وتعديل حسابات المتعاملين.</p>
+                    <h4>إدارة العملاء والموردين</h4>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">عرض الأرصدة وإضافة وتعديل حسابات المتعاملين</p>
                 </div>
             </div>
         </section>
 
-        <!-- ==================== الشاشة الثانية: تسجيل المبيعات الأوفلاين ==================== -->
+        <!-- الشاشة 2: تسجيل المبيعات -->
         <section id="tab-sales" class="tab-content">
-            <div style="max-width: 550px; margin: 0 auto;">
+            <div style="max-width: 500px; margin: 0 auto;">
                 <div class="card">
-                    <h2 style="margin-bottom: 16px;">تسجيل عملية بيع جديدة</h2>
+                    <h2 style="margin-bottom: 14px;">تسجيل عملية بيع جديدة</h2>
                     <form id="salesForm">
                         <div class="form-group">
-                            <label class="form-label">اسم/رمز الحساب</label>
+                            <label class="form-label">اسم الحساب</label>
                             <input type="text" id="saleAccount" class="form-input" value="حساب العميل" required>
                         </div>
                         <div class="form-group">
@@ -292,69 +250,39 @@
                         </div>
                         <button type="submit" class="btn-primary" style="width: 100%;">تسجيل العملية</button>
                     </form>
-
-                    <div style="margin-top: 16px; padding: 10px; background: #fff7ed; border-radius: 8px; color: #c2410c; display: flex; justify-content: space-between; font-size: 0.85rem;">
+                    <div style="margin-top: 14px; padding: 10px; background: #fff7ed; border-radius: 8px; color: #c2410c; display: flex; justify-content: space-between; font-size: 0.85rem;">
                         <span>طابور المزامنة المحلي (Offline Queue):</span>
-                        <strong class="queue-counter-badge">0</strong>
+                        <strong id="queueCounterBadge">0</strong>
                     </div>
                 </div>
 
                 <div class="card">
-                    <h3 style="font-size: 1rem; margin-bottom: 12px;">سجل العمليات المعلقة في التخزين المحلي</h3>
+                    <h3 style="font-size: 0.95rem; margin-bottom: 10px;">سجل العمليات المعلقة محلياً</h3>
                     <table class="app-table">
                         <thead>
                             <tr>
                                 <th>الحساب</th>
                                 <th>المبلغ</th>
                                 <th>الوقت</th>
-                                <th>الحالة</th>
                             </tr>
                         </thead>
                         <tbody id="salesQueueTableBody">
-                            <!-- تعبئة صفوف الطابور عبر JS -->
+                            <tr><td colspan="3" style="text-align: center; color: var(--text-muted);">لا يوجد عمليات معلقة</td></tr>
                         </tbody>
                     </table>
                 </div>
             </div>
         </section>
 
-        <!-- ==================== الشاشة الثالثة: إدارة المنتجات والمخزون ==================== -->
+        <!-- الشاشة 3: المنتجات -->
         <section id="tab-products" class="tab-content">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
-                <h2>إدارة المنتجات والمخزون</h2>
-                <button class="btn-primary" id="openAddProductModal">+ إضافة منتج جديد</button>
-            </div>
-
-            <div class="card" style="display: flex; gap: 12px; flex-wrap: wrap; padding: 12px;">
-                <input type="text" id="productSearch" class="form-input" style="flex-grow: 1;" placeholder="ابحث باسم المنتج أو الفئة...">
-                <select id="productCatFilter" class="form-select" style="width: 180px;">
-                    <option value="">جميع الفئات</option>
-                    <option value="إلكترونيات">إلكترونيات</option>
-                    <option value="مستلزمات مكتبية">مستلزمات مكتبية</option>
-                </select>
-            </div>
-
-            <div class="products-grid" id="productsGridContainer">
-                <!-- كروت المنتجات الجاهزة عبر JS -->
-            </div>
+            <h2 style="margin-bottom: 14px;">إدارة المنتجات والمخزون</h2>
+            <div class="products-grid" id="productsGridContainer"></div>
         </section>
 
-        <!-- ==================== الشاشة الرابعة: إدارة الحسابات والعملاء ==================== -->
+        <!-- الشاشة 4: الحسابات -->
         <section id="tab-accounts" class="tab-content">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
-                <h2>إدارة الحسابات والعملاء والموردين</h2>
-                <button class="btn-primary" id="openAddAccountModal">+ إضافة حساب جديد</button>
-            </div>
-
-            <div class="card" style="display: flex; gap: 12px; flex-wrap: wrap; padding: 12px;">
-                <input type="text" id="accountSearch" class="form-input" style="flex-grow: 1;" placeholder="ابحث باسم الحساب...">
-                <select id="accountTypeFilter" class="form-select" style="width: 180px;">
-                    <option value="ALL">جميع الحسابات</option>
-                    <option value="CUSTOMER">العملاء</option>
-                    <option value="SUPPLIER">الموردون</option>
-                </select>
-            </div>
-
+            <h2 style="margin-bottom: 14px;">إدارة الحسابات والعملاء والموردين</h2>
             <div class="card" style="padding: 0; overflow: hidden;">
                 <table class="app-table">
                     <thead>
@@ -363,104 +291,115 @@
                             <th>اسم الحساب</th>
                             <th>النوع</th>
                             <th>الرصيد المالي</th>
-                            <th>الإجراءات</th>
                         </tr>
                     </thead>
-                    <tbody id="accountsTableBody">
-                        <!-- تعبئة صفوف الحسابات عبر JS -->
-                    </tbody>
+                    <tbody id="accountsTableBody"></tbody>
                 </table>
             </div>
         </section>
 
     </main>
 
-    <!-- Modal 1: إضافة منتج -->
-    <div class="modal-overlay" id="productModal">
-        <div class="modal-card">
-            <h3 style="margin-bottom: 12px;">إضافة منتج جديد</h3>
-            <form id="addProductForm">
-                <div class="form-group">
-                    <label class="form-label">اسم المنتج</label>
-                    <input type="text" id="pName" class="form-input" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">الفئة</label>
-                    <input type="text" id="pCategory" class="form-input" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">السعر (ريال)</label>
-                    <input type="number" id="pPrice" class="form-input" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">الكمية</label>
-                    <input type="number" id="pStock" class="form-input" required>
-                </div>
-                <button type="submit" class="btn-primary" style="width: 100%; margin-top: 10px;">حفظ المنتج</button>
-                <button type="button" class="btn-primary" id="closeProductModal" style="width: 100%; margin-top: 6px; background: #64748b;">إلغاء</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal 2: إضافة حساب -->
-    <div class="modal-overlay" id="accountModal">
-        <div class="modal-card">
-            <h3 style="margin-bottom: 12px;">إضافة حساب جديد</h3>
-            <form id="addAccountForm">
-                <div class="form-group">
-                    <label class="form-label">اسم الحساب</label>
-                    <input type="text" id="accName" class="form-input" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">النوع</label>
-                    <select id="accType" class="form-select">
-                        <option value="CUSTOMER">عميل</option>
-                        <option value="SUPPLIER">مورد</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">الرصيد الافتتاحي</label>
-                    <input type="number" id="accBalance" class="form-input" value="0" required>
-                </div>
-                <button type="submit" class="btn-primary" style="width: 100%; margin-top: 10px;">حفظ الحساب</button>
-                <button type="button" class="btn-primary" id="closeAccountModal" style="width: 100%; margin-top: 6px; background: #64748b;">إلغاء</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- المحرك البرمجي الشامل للـ SPA وتتبع المزامنة الأوفلاين -->
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        // دالة التبديل بين الشاشات
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
 
-            // ==================== 1. الحالة العامة لقواعد البيانات (State) ====================
-            const STORAGE_KEY = 'offline_sales_queue';
+            const targetContent = document.getElementById('tab-' + tabId);
+            if (targetContent) targetContent.classList.add('active');
 
-            let inventory = [
-                { id: 1, name: "طابعة ليزر متعددة الوظائف", category: "مستلزمات مكتبية", price: 1250, stock: 15 },
-                { id: 2, name: "شاشة عرض 4K IPS 27 بوصة", category: "إلكترونيات", price: 1800, stock: 4 },
-                { id: 3, name: "ماكينة إعداد القهوة الذكية", category: "أجهزة منزلية", price: 890, stock: 22 }
-            ];
+            const links = document.querySelectorAll('.nav-link');
+            links.forEach(link => {
+                if (link.getAttribute('onclick').includes(tabId)) {
+                    link.classList.add('active');
+                }
+            });
+        }
 
-            let accounts = [
-                { id: "ACC-101", name: "شركة الأمل للتجارة", type: "CUSTOMER", balance: 45000 },
-                { id: "ACC-102", name: "مؤسسة الأفق المتقدمة", type: "CUSTOMER", balance: -8500 },
-                { id: "ACC-103", name: "شركة التوريدات العالمية", type: "SUPPLIER", balance: 120000 }
-            ];
+        const STORAGE_KEY = 'offline_sales_queue';
+        let inventory = [
+            { id: 1, name: "طابعة ليزر متعددة الوظائف", category: "مستلزمات مكتبية", price: 1250, stock: 15 },
+            { id: 2, name: "شاشة عرض 4K IPS 27 بوصة", category: "إلكترونيات", price: 1800, stock: 4 },
+            { id: 3, name: "ماكينة إعداد القهوة الذكية", category: "أجهزة منزلية", price: 890, stock: 22 }
+        ];
 
-            let totalSyncedSalesAmount = 125000;
-            let totalSyncedSalesCount = 3;
+        let accounts = [
+            { id: "ACC-101", name: "شركة الأمل للتجارة", type: "عميل", balance: 45000 },
+            { id: "ACC-102", name: "مؤسسة الأفق المتقدمة", type: "عميل", balance: -8500 },
+            { id: "ACC-103", name: "شركة التوريدات العالمية", type: "مورد", balance: 120000 }
+        ];
 
-            // ==================== 2. محرك المزامنة وإدارة الأوفلاين (Engine) ====================
-            function getOfflineQueue() {
-                const q = localStorage.getItem(STORAGE_KEY);
-                return q ? JSON.parse(q) : [];
+        function getQueue() {
+            const q = localStorage.getItem(STORAGE_KEY);
+            return q ? JSON.parse(q) : [];
+        }
+
+        function renderAll() {
+            // رسم المنتجات
+            const pGrid = document.getElementById('productsGridContainer');
+            pGrid.innerHTML = inventory.map(p => `
+                <div class="product-card">
+                    <h4>${p.name}</h4>
+                    <p style="color: var(--primary); font-weight: 700; margin: 6px 0;">${p.price} ريال</p>
+                    <p style="font-size: 0.8rem; color: var(--text-muted);">المخزون المتاح: ${p.stock}</p>
+                </div>
+            `).join('');
+
+            // رسم الحسابات
+            const aTable = document.getElementById('accountsTableBody');
+            aTable.innerHTML = accounts.map(a => `
+                <tr>
+                    <td><strong>${a.id}</strong></td>
+                    <td>${a.name}</td>
+                    <td>${a.type}</td>
+                    <td style="font-weight: 700;">${a.balance} ريال</td>
+                </tr>
+            `).join('');
+
+            // رسم طابور الأوفلاين
+            const queue = getQueue();
+            document.getElementById('queueCounterBadge').textContent = queue.length;
+            document.getElementById('dashOfflineCount').textContent = queue.length;
+
+            const qTable = document.getElementById('salesQueueTableBody');
+            if (queue.length === 0) {
+                qTable.innerHTML = '<tr><td colspan="3" style="text-align: center; color: var(--text-muted);">لا يوجد عمليات معلقة</td></tr>';
+            } else {
+                qTable.innerHTML = queue.map(i => `
+                    <tr>
+                        <td>${i.account}</td>
+                        <td>${i.amount} ريال</td>
+                        <td>${new Date(i.timestamp).toLocaleTimeString('ar-SA')}</td>
+                    </tr>
+                `).join('');
             }
+        }
 
-            function saveOfflineQueue(q) {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(q));
-                updateAllViews();
-            }
+        document.getElementById('salesForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const account = document.getElementById('saleAccount').value;
+            const amount = parseFloat(document.getElementById('saleAmount').value);
 
-            function updateNetworkStatus() {
-                const isOnline = navigator.onLine;
-                const statusDiv = document.getElementById(
+            const payload = { account, amount, timestamp: new Date().toISOString() };
+            const q = getQueue();
+            q.push(payload);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(q));
+            renderAll();
+            alert('تم تسجيل العملية بنجاح في طابور التخزين المحلي');
+        });
+
+        window.addEventListener('online', () => {
+            document.getElementById('globalNetStatus').className = 'network-status online';
+            document.getElementById('globalNetText').textContent = 'متصل';
+        });
+
+        window.addEventListener('offline', () => {
+            document.getElementById('globalNetStatus').className = 'network-status offline';
+            document.getElementById('globalNetText').textContent = 'غير متصل';
+        });
+
+        renderAll();
+    </script>
+</body>
+</html>
