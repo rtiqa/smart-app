@@ -197,8 +197,12 @@
         .form-label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 4px; }
         .form-input, .form-select { width: 100%; padding: 8px 12px; border: 1px solid var(--border); border-radius: 6px; }
 
-        @media (max-width: 768px) {
-            .nav-tabs { display: none; } /* يمكن ربطها بقائمة سفلية للهاتف */
+         @media (max-width: 768px) {
+    .navbar { flex-direction: column; gap: 10px; align-items: flex-start; }
+    .nav-tabs { display: flex; overflow-x: auto; width: 100%; padding-bottom: 4px; }
+    .nav-link { white-space: nowrap; font-size: 0.8rem; padding: 6px 10px; }
+         }
+        /* يمكن ربطها بقائمة سفلية للهاتف */
         }
     </style>
 </head>
